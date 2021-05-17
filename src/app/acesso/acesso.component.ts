@@ -14,12 +14,22 @@ import { Component, OnInit } from '@angular/core';
         style({opacity: 0, transform: 'translate(-75px, 0px)'}),
         animate('500ms 0s ease-in-out') // duração, dalay e aceleração 
       ])
+    ]),
+    trigger('animacao-painel', [
+      state('criado', style({
+        opacity: 1
+      })),
+      transition('void => criado', [
+        style({opacity: 0, transform: 'translate(75px, 0px)'}),
+        animate('500ms 0s ease-in-out')
+      ])
     ])
   ]
 })
 export class AcessoComponent implements OnInit {
 
   public estadoBanner:string = 'criado'
+  public estadoPainel: string = 'criado'
 
   constructor() { }
 
