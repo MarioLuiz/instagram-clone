@@ -43,7 +43,7 @@ export class BannerComponent implements OnInit {
     for (let i = 0; i <= (this.imagens.length - 1); i++) {
       if (this.imagens[i].estado === 'visivel') {
         this.imagens[i].estado = 'escondido'
-        idx = i === 4 ? 0 : (i + 1)
+        idx = i === (this.imagens.length - 1) ? 0 : (i + 1)
         break
       }
     }
