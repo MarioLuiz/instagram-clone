@@ -1,12 +1,23 @@
 <div class="container">
   <div class="row">
-    <div class="col-sm-6 d-flex justify-content-end" [@animacao-banner]="estadoBanner">
+    <div class="col-sm-6 d-flex justify-content-end"
+         [@animacao-banner]="estadoBanner">
       <instaclone-banner></instaclone-banner>
     </div>
 
-    <div class="col-sm-6 d-flex justify-content-start" [@animacao-painel]="estadoPainel">
-      <instaclone-login></instaclone-login>
-      <!--<instaclone-cadastro></instaclone-cadastro>-->
+    <div *ngIf="cadastro; else formLogin">
+      <div class="col-sm-6 d-flex justify-content-start"
+           [@animacao-painel]="estadoPainel">
+        <instaclone-cadastro></instaclone-cadastro>
+      </div>
     </div>
+
+    <ng-template #formLogin>
+      <div class="col-sm-6 d-flex justify-content-start"
+           [@animacao-painel]="estadoPainel">
+        <instaclone-login (exibirPainel)="exibirPainel($event)"></instaclone-login>
+      </div>
+    </ng-template>
+
   </div>
 </div>
