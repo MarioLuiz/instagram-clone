@@ -11,7 +11,7 @@ import { Component, OnInit } from '@angular/core';
         opacity: 1
       })),
       transition('void => criado', [
-        style({opacity: 0, transform: 'translate(-75px, 0px)'}),
+        style({ opacity: 0, transform: 'translate(-75px, 0px)' }),
         animate('500ms 0s ease-in-out') // duração, dalay e aceleração 
       ])
     ]),
@@ -20,7 +20,7 @@ import { Component, OnInit } from '@angular/core';
         opacity: 1
       })),
       transition('void => criado', [
-        style({opacity: 0, transform: 'translate(75px, 0px)'}),
+        style({ opacity: 0, transform: 'translate(75px, 0px)' }),
         animate('500ms 0s ease-in-out')
       ])
     ])
@@ -28,18 +28,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AcessoComponent implements OnInit {
 
-  public estadoBanner:string = 'criado'
+  public estadoBanner: string = 'criado'
   public estadoPainel: string = 'criado'
 
-  public cadastro:boolean = false
+  public cadastro: boolean = false
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  public exibirPainel(event:string):void{
-    this.cadastro = event ==='cadastro' ? true : false
+  public exibirPainel(event: string): void {
+    this.cadastro = event === 'cadastro' ? true : false
   }
 
 }

@@ -8,7 +8,7 @@
     <div *ngIf="cadastro; else formLogin">
       <div class="col-sm-6 d-flex justify-content-start"
            [@animacao-painel]="estadoPainel">
-        <instaclone-cadastro></instaclone-cadastro>
+        <instaclone-cadastro (exibirPainel)="exibirPainel($event)"></instaclone-cadastro>
       </div>
     </div>
 
