@@ -13,15 +13,19 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const firebaseConfig = {
-      apiKey: "", // colocar conforme as configurações do firebase
-      authDomain: "", // colocar conforme as configurações do firebase
-      projectId: "", // colocar conforme as configurações do firebase
-      storageBucket: "", // colocar conforme as configurações do firebase
-      messagingSenderId: "", // colocar conforme as configurações do firebase
-      appId: "", // colocar conforme as configurações do firebase
-      measurementId: "" // colocar conforme as configurações do firebase
+    var firebaseConfig = {
+      // colocar as configurações do seu fireBase
+      // Project settings > SDK setup and configuration > CDN
+      apiKey: "",
+      authDomain: "",
+      databaseURL: "",
+      projectId: "",
+      storageBucket: "",
+      messagingSenderId: "",
+      appId: "",
+      measurementId: ""
     };
+
     firebase.initializeApp(firebaseConfig)
   }
 }
