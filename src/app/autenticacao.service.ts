@@ -20,4 +20,15 @@ export class Autenticacao {
                 console.log('Erro ao salvar user Firebase', error)
             })
     }
+    public autenticar(email: string, senha: string): void {
+        console.log('email: ', email)
+        console.log('senha: ', senha)
+        firebase.auth().signInWithEmailAndPassword(email, senha)
+            .then((resposta) => {
+                console.log('Resposta autenticar user', resposta)
+            })
+            .catch((error: Error) => {
+                console.log('Erro ao autenticar user', error)
+            })
+    }
 }
