@@ -39,5 +39,13 @@ export class CadastroComponent implements OnInit {
       this.formulario.value.senha,
     )
     this.autenticacao.cadastrarUsuario(usuario)
+      .then((resposta: any) => {
+          console.log('Usuário Salvo com sucesso', resposta)
+          this.exibirPainelLogin()
+      })
+      .catch((error: Error) => {
+        console.log('Erro ao Cadastrar user', error)
+        return error
+      })
   }
 }
