@@ -58,4 +58,8 @@ export class Autenticacao {
                 }
             })
     }
+
+    public autenticado(): boolean {
+        return this.token_id !== undefined
+    }
 }
