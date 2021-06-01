@@ -1,9 +1,14 @@
+import { Injectable } from '@angular/core';
 import { Usuario } from './acesso/usuario.model';
 import firebase from 'firebase';
+import { Router } from '@angular/router';
 
+@Injectable()
 export class Autenticacao {
 
     public token_id: string | undefined
+
+    constructor(private router: Router) { }
 
     public cadastrarUsuario(usuario: Usuario): Promise<any> {
         console.log('Chegamos até o serviço: ', usuario)
@@ -15,10 +20,10 @@ export class Autenticacao {
                 this.salvarDadosDoUsuario(usuario, 3)
                 return resposta
             })
-            // .catch((error: Error) => {
-            //    console.log('Erro ao Cadastrar user', error)
-            //    return new Error(error.message)
-            // })
+        // .catch((error: Error) => {
+        //    console.log('Erro ao Cadastrar user', error)
+        //    return new Error(error.message)
+        // })
     }
 
     public autenticar(email: string, senha: string): void {
@@ -29,7 +34,7 @@ export class Autenticacao {
                 firebase.auth().currentUser?.getIdToken()
                     .then((idToken: string) => {
                         this.token_id = idToken
-                        console.log('Token do usuário', idToken)
+                        this.router.navigate(['home'])
                     })
                 console.log('Resposta autenticar user', resposta)
             })
@@ -38,7 +43,7 @@ export class Autenticacao {
             })
     }
 
-    public salvarDadosDoUsuario(dadosUser: any, retry: number):void {
+    public salvarDadosDoUsuario(dadosUser: any, retry: number): void {
         // registrando dados complementares do usuário no path email na base64
         // console.log('Reposta Firebase', resposta)
         firebase.database().ref(`usuario_detalhe/${btoa(dadosUser.email)}`)
