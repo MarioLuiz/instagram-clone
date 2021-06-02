@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Autenticacao } from 'src/app/autenticacao.service';
 
 @Component({
   selector: 'instaclone-home',
@@ -7,9 +8,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor( private autenticacao: Autenticacao) { }
 
   ngOnInit(): void {
+  }
+
+  public sair(): void {
+    this.autenticacao.sair()
   }
 
 }

@@ -7,6 +7,7 @@ import { Router } from '@angular/router';
 export class Autenticacao {
 
     public token_id: string | null | undefined
+    public token_fireBase: string = ''
 
     constructor(private router: Router) { }
 
@@ -22,22 +23,26 @@ export class Autenticacao {
             })
         // .catch((error: Error) => {
         //    console.log('Erro ao Cadastrar user', error)
-        //    return new Error(error.message)
         // })
     }
 
     public autenticar(email: string, senha: string): void {
-        console.log('email: ', email)
-        console.log('senha: ', senha)
+        // console.log('email: ', email)
+        // console.log('senha: ', senha)
         firebase.auth().signInWithEmailAndPassword(email, senha)
-            .then((resposta) => {
+            .then((resposta: any) => {
                 firebase.auth().currentUser?.getIdToken()
                     .then((idToken: string) => {
                         this.token_id = idToken
                         localStorage.setItem('idToken', this.token_id)
                         this.router.navigate(['home'])
                     })
-                console.log('Resposta autenticar user', resposta)
+                
+                // Salvando chave do token database
+                let dataBaseUrlFireBase: any = firebase.database().ref()
+                this.token_fireBase = 'firebase:host:' + (dataBaseUrlFireBase.database.app.options_.databaseURL).replace("https://", "")
+                this.token_fireBase.trim()
+                //console.log('Resposta autenticar user', resposta)
             })
             .catch((error: Error) => {
                 console.log('Erro ao autenticar user', error)
@@ -61,10 +66,20 @@ export class Autenticacao {
     }
 
     public autenticado(): boolean {
-
         if (this.token_id === undefined && localStorage.getItem('idToken') != null) {
             this.token_id = localStorage.getItem('idToken')
         }
         return this.token_id !== undefined
     }
+
+    public sair(): void {
+        firebase.auth().signOut()
+            .then(() => {
+                localStorage.removeItem('idToken')
+                localStorage.removeItem(this.token_fireBase)
+                this.token_id = undefined
+                this.router.navigate(['/'])
+            })
+    }
+
 }
