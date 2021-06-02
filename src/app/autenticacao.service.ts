@@ -35,9 +35,9 @@ export class Autenticacao {
                     .then((idToken: string) => {
                         this.token_id = idToken
                         localStorage.setItem('idToken', this.token_id)
-                        this.router.navigate(['home'])
+                        this.router.navigate(['/home'])
                     })
-                
+
                 // Salvando chave do token database
                 let dataBaseUrlFireBase: any = firebase.database().ref()
                 this.token_fireBase = 'firebase:host:' + (dataBaseUrlFireBase.database.app.options_.databaseURL).replace("https://", "")
@@ -69,6 +69,10 @@ export class Autenticacao {
         if (this.token_id === undefined && localStorage.getItem('idToken') != null) {
             this.token_id = localStorage.getItem('idToken')
         }
+
+        if (this.token_id === undefined) {
+            this.router.navigate(['/'])
+        }
         return this.token_id !== undefined
     }
 
@@ -78,6 +82,7 @@ export class Autenticacao {
                 localStorage.removeItem('idToken')
                 localStorage.removeItem(this.token_fireBase)
                 this.token_id = undefined
+                this.token_fireBase = ''
                 this.router.navigate(['/'])
             })
     }
