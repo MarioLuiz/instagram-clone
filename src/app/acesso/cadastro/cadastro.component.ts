@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Autenticacao } from 'src/app/autenticacao.service';
 import { Usuario } from '../usuario.model';
 
@@ -13,11 +13,14 @@ export class CadastroComponent implements OnInit {
 
   @Output() public exibirPainel: EventEmitter<string> = new EventEmitter<string>()
 
+  mensagemErroRegistro: string = ''
+  
   public formulario: FormGroup = new FormGroup({
-    'email': new FormControl(null),
-    'nome_completo': new FormControl(null),
-    'nome_usuario': new FormControl(null),
-    'senha': new FormControl(null)
+    'email': new FormControl(null, [Validators.required, Validators.minLength(7), Validators.maxLength(254),
+    Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\\.[a-z]{2,4}$")]),
+    'nome_completo': new FormControl(null, [Validators.required]),
+    'nome_usuario': new FormControl(null, [Validators.required]),
+    'senha': new FormControl(null, [Validators.required, Validators.minLength(6)])
   })
 
   constructor(
@@ -26,6 +29,9 @@ export class CadastroComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
+  // conveniente getter para facil acesso dos campos do formulario
+  get f() { return this.formulario.controls; }
 
   exibirPainelLogin(): void {
     this.exibirPainel.emit('login')
@@ -40,12 +46,12 @@ export class CadastroComponent implements OnInit {
     )
     this.autenticacao.cadastrarUsuario(usuario)
       .then((resposta: any) => {
-          console.log('Usuário Salvo com sucesso', resposta)
-          this.exibirPainelLogin()
+        console.log('Usuário Salvo com sucesso', resposta)
+        this.exibirPainelLogin()
       })
       .catch((error: Error) => {
         console.log('Erro ao Cadastrar user', error)
-        return error
+        this.mensagemErroRegistro = error.message
       })
   }
 }
