@@ -26,32 +26,30 @@ export class Autenticacao {
         // })
     }
 
-    public autenticar(email: string, senha: string): void {
-        // console.log('email: ', email)
-        // console.log('senha: ', senha)
-        firebase.auth().signInWithEmailAndPassword(email, senha)
+    public autenticar(email: string, senha: string): Promise<any> {
+
+        return firebase.auth().signInWithEmailAndPassword(email, senha)
             .then((resposta: any) => {
                 firebase.auth().currentUser?.getIdToken()
                     .then((idToken: string) => {
                         this.token_id = idToken
                         localStorage.setItem('idToken', this.token_id)
-                        this.router.navigate(['/home'])
                     })
-
                 // Salvando chave do token database
                 let dataBaseUrlFireBase: any = firebase.database().ref()
                 this.token_fireBase = 'firebase:host:' + (dataBaseUrlFireBase.database.app.options_.databaseURL).replace("https://", "")
                 this.token_fireBase.trim()
-                //console.log('Resposta autenticar user', resposta)
+
+                return resposta
             })
-            .catch((error: Error) => {
-                console.log('Erro ao autenticar user', error)
-            })
+        // .catch((error: Error) => {
+        //     console.log('Erro ao autenticar user', error)
+        // })
     }
 
     public salvarDadosDoUsuario(dadosUser: any, retry: number): void {
+
         // registrando dados complementares do usuário no path email na base64
-        // console.log('Reposta Firebase', resposta)
         firebase.database().ref(`usuario_detalhe/${btoa(dadosUser.email)}`)
             .set(dadosUser)
             .then((resposta) => {
