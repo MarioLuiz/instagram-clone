@@ -3,8 +3,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms'
 import { Autenticacao } from 'src/app/autenticacao.service';
 import { Router } from '@angular/router';
 import { animate, keyframes, state, style, transition, trigger } from '@angular/animations';
-import { Observable, Subject } from 'rxjs';
-
 
 @Component({
   selector: 'instaclone-login',
@@ -61,6 +59,7 @@ export class LoginComponent implements OnInit {
   }
 
   public autenticar(): void {
+    this.mensagemErroSighIn = ''
     //console.log('Formulario', this.formulario)
     this.autenticacao.autenticar(this.formulario.value.email, this.formulario.value.senha)
       .then((resposta) => {
@@ -69,6 +68,7 @@ export class LoginComponent implements OnInit {
       .catch((error: Error) => {
         console.log('Erro ao autenticar user', error)
         this.mensagemErroSighIn = error.message
+        this.estadoAnimacaoPainelLogin = 'criado'
       })
   }
 

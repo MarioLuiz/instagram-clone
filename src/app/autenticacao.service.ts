@@ -12,7 +12,7 @@ export class Autenticacao {
     constructor(private router: Router) { }
 
     public cadastrarUsuario(usuario: Usuario): Promise<any> {
-        console.log('Chegamos até o serviço: ', usuario)
+        //console.log('Chegamos até o serviço: ', usuario)
         return firebase.auth().createUserWithEmailAndPassword(usuario.email, usuario.senha)
             .then((resposta: any) => {
                 // removendo a senha do atrubuto senha do obj usuario
@@ -21,9 +21,6 @@ export class Autenticacao {
                 this.salvarDadosDoUsuario(usuario, 3)
                 return resposta
             })
-        // .catch((error: Error) => {
-        //    console.log('Erro ao Cadastrar user', error)
-        // })
     }
 
     public autenticar(email: string, senha: string): Promise<any> {
@@ -42,9 +39,6 @@ export class Autenticacao {
 
                 return resposta
             })
-        // .catch((error: Error) => {
-        //     console.log('Erro ao autenticar user', error)
-        // })
     }
 
     public salvarDadosDoUsuario(dadosUser: any, retry: number): void {
