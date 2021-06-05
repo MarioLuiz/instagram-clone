@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms'
 import { Bd } from '../../bd.service'
+import { ProgressoService } from '../../progresso.service'
 import firebase from 'firebase';
 
 @Component({
@@ -18,7 +19,8 @@ export class IncluirPublicacaoComponent implements OnInit {
   })
 
   constructor(
-    private bd: Bd
+    private bd: Bd,
+    private progressoService: ProgressoService
   ) { }
 
   ngOnInit(): void {
@@ -33,6 +35,8 @@ export class IncluirPublicacaoComponent implements OnInit {
       titulo: this.formulario.value.titulo,
       imagem: this.imagem[0]
     })
+    console.log('Status Upload: ', this.progressoService.status)
+    console.log('Estado Upload: ', this.progressoService.estado)
   }
 
   public preparaImegemUpload(event: Event): void {
