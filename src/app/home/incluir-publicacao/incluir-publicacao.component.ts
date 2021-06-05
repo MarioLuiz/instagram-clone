@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms'
+import firebase from 'firebase';
+
 import { Bd } from '../../bd.service'
 import { ProgressoService } from '../../progresso.service'
-import firebase from 'firebase';
+
+import { Subject, interval } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'instaclone-incluir-publicacao',
@@ -35,8 +39,19 @@ export class IncluirPublicacaoComponent implements OnInit {
       titulo: this.formulario.value.titulo,
       imagem: this.imagem[0]
     })
-    console.log('Status Upload: ', this.progressoService.status)
-    console.log('Estado Upload: ', this.progressoService.estado)
+
+    let continua = new Subject<boolean>()
+    continua.next(true)
+    let acompanhamentoUpload = interval(250)
+
+    acompanhamentoUpload.pipe(takeUntil(continua))
+      .subscribe(() => {
+        console.log('Status Upload: ', this.progressoService.status)
+        console.log('Estado Upload: ', this.progressoService.estado)
+        if (this.progressoService.status === 'concluido' || this.progressoService.status === 'erro') {
+          continua.next(false)
+        }
+      })
   }
 
   public preparaImegemUpload(event: Event): void {

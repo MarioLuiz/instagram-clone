@@ -20,7 +20,7 @@ export class Bd {
                 (snapshot: any) => {
                     this.progressoService.status = 'andamento'
                     this.progressoService.estado = snapshot
-                    console.log('Snapshot capturado no on()', snapshot)
+                    // console.log('Snapshot capturado no on()', snapshot)
                 },
                 (error) => {
                     this.progressoService.status = 'erro'
