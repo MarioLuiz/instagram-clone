@@ -11,6 +11,7 @@ import firebase from 'firebase';
 export class IncluirPublicacaoComponent implements OnInit {
 
   public email: string | undefined
+  private imagem: any
 
   public formulario: FormGroup = new FormGroup({
     'titulo': new FormControl(null)
@@ -21,7 +22,7 @@ export class IncluirPublicacaoComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    firebase.auth().onAuthStateChanged((user:any) => {
+    firebase.auth().onAuthStateChanged((user: any) => {
       this.email = user.email
     })
   }
@@ -29,8 +30,14 @@ export class IncluirPublicacaoComponent implements OnInit {
   public publicar(): void {
     this.bd.publicar({
       email: this.email,
-      titulo: this.formulario.value.titulo
+      titulo: this.formulario.value.titulo,
+      imagem: this.imagem[0]
     })
+  }
+
+  public preparaImegemUpload(event: Event): void {
+    console.log('Event', (<HTMLInputElement>event.target).files)
+    this.imagem = (<HTMLInputElement>event.target).files
   }
 
 }
