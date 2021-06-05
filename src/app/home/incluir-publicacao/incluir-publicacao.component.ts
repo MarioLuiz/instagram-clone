@@ -16,6 +16,9 @@ import { takeUntil } from 'rxjs/operators';
 export class IncluirPublicacaoComponent implements OnInit {
 
   public email: string | undefined
+  public progressoPublicacao: string = 'pendente'
+  public porcentagemUpload: number | undefined
+
   private imagem: any
 
   public formulario: FormGroup = new FormGroup({
@@ -48,7 +51,12 @@ export class IncluirPublicacaoComponent implements OnInit {
       .subscribe(() => {
         console.log('Status Upload: ', this.progressoService.status)
         console.log('Estado Upload: ', this.progressoService.estado)
+        this.progressoPublicacao = 'andamento'
+        this.porcentagemUpload = Math.round(
+          (this.progressoService.estado.bytesTransferred / this.progressoService.estado.totalBytes) * 100
+        )
         if (this.progressoService.status === 'concluido' || this.progressoService.status === 'erro') {
+          this.progressoPublicacao = 'andamento'
           continua.next(false)
         }
       })
