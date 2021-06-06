@@ -6,6 +6,7 @@ import { ProgressoService } from './progresso.service';
 export class Bd {
 
     constructor(private progressoService: ProgressoService) { }
+
     public publicar(publicacao: any): void {
         // console.log('Chegamos até o Bd, Publicacao: ', publicacao)
         let nomeImagem: string = ''
@@ -45,5 +46,14 @@ export class Bd {
                     // console.log('Upload completo')
                 }
             )
+    }
+
+    public consultaPublicacoes(emailUsuario: string): any {
+        console.log('consultaPublicacoes email', emailUsuario)
+        firebase.database().ref(`publicacoes/${btoa(emailUsuario)}`)
+            .once('value')
+            .then((snapshot: any) => {
+                console.log('consultaPublicacoes snapshot', snapshot.val())
+            })
     }
 }
