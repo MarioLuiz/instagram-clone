@@ -48,35 +48,39 @@ export class Bd {
             )
     }
 
-    public consultaPublicacoes(emailUsuario: string): any {
-        // console.log('consultaPublicacoes email', emailUsuario)
-        //consultar as publicacoes (database)
-        firebase.database().ref(`publicacoes/${btoa(emailUsuario)}`)
-            .once('value')
-            .then((snapshot: any) => {
-                //console.log('consultaPublicacoes snapshot', snapshot.val())
+    public consultaPublicacoes(emailUsuario: string): Promise<any> {
 
-                let publicacoes: Array<any> = []
+        return new Promise((resolve, reject) => {
+            // console.log('consultaPublicacoes email', emailUsuario)
+            //consultar as publicacoes (database)
+            firebase.database().ref(`publicacoes/${btoa(emailUsuario)}`)
+                .once('value')
+                .then((snapshot: any) => {
+                    //console.log('consultaPublicacoes snapshot', snapshot.val())
 
-                snapshot.forEach((childSnapshot: any) => {
-                    let publicacao = childSnapshot.val()
-                    // consultar a url da imagem (storage)
-                    firebase.storage().ref()
-                        .child(`imagens/${childSnapshot.key}`)
-                        .getDownloadURL()
-                        .then((url: string) => {
-                            publicacao.url_imagem = url
-                        })
-                        .finally(() => {
-                            //consultar nome do usuário
-                            this.consultaNomeUsuario(emailUsuario).then((nome: any) => {
-                                publicacao.nome_usuario = nome
+                    let publicacoes: Array<any> = []
+
+                    snapshot.forEach((childSnapshot: any) => {
+                        let publicacao = childSnapshot.val()
+                        // consultar a url da imagem (storage)
+                        firebase.storage().ref()
+                            .child(`imagens/${childSnapshot.key}`)
+                            .getDownloadURL()
+                            .then((url: string) => {
+                                publicacao.url_imagem = url
                             })
-                            publicacoes.push(publicacao)
-                        })
+                            .finally(() => {
+                                //consultar nome do usuário
+                                this.consultaNomeUsuario(emailUsuario).then((nome: any) => {
+                                    publicacao.nome_usuario = nome
+                                })
+                                publicacoes.push(publicacao)
+                            })
+                    })
+                    //console.log('Publicações', publicacoes)
+                    resolve(publicacoes)
                 })
-                console.log('Publicações', publicacoes)
-            })
+        })
     }
 
     public consultaNomeUsuario(emailUsuario: string) {
