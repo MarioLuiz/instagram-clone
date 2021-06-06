@@ -66,11 +66,26 @@ export class Bd {
                         .getDownloadURL()
                         .then((url: string) => {
                             publicacao.url_imagem = url
-                            //console.log('UrlDaImagem:', url)
+                        })
+                        .finally(() => {
+                            //consultar nome do usuário
+                            this.consultaNomeUsuario(emailUsuario).then((nome: any) => {
+                                publicacao.nome_usuario = nome
+                            })
                             publicacoes.push(publicacao)
                         })
                 })
                 console.log('Publicações', publicacoes)
+            })
+    }
+
+    public consultaNomeUsuario(emailUsuario: string) {
+        return firebase.database().ref(`usuario_detalhe/${btoa(emailUsuario)}`)
+            .once('value')
+            .then((snapShot: any) => {
+                //console.log('Nome:', snapShot.val().nomeUsuario)
+                let nome: string = snapShot.val().nomeUsuario
+                return nome
             })
     }
 }
