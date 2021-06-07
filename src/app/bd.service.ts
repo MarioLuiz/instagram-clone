@@ -54,17 +54,29 @@ export class Bd {
             // console.log('consultaPublicacoes email', emailUsuario)
             //consultar as publicacoes (database)
             firebase.database().ref(`publicacoes/${btoa(emailUsuario)}`)
+                .orderByKey()
                 .once('value')
                 .then((snapshot: any) => {
                     //console.log('consultaPublicacoes snapshot', snapshot.val())
-
                     let publicacoes: Array<any> = []
 
                     snapshot.forEach((childSnapshot: any) => {
+                        //console.log('childSnapshot', childSnapshot)
                         let publicacao = childSnapshot.val()
-                        // consultar a url da imagem (storage)
+                        publicacao.key = childSnapshot.key
+
+                        publicacoes.push(publicacao)
+                    })
+                    //console.log('Publicações', publicacoes)
+                    // Revertendo o array
+                    return publicacoes.reverse()
+                })
+                .then((publicacoes: any) => {
+                    // console.log('Publicações: ', publicacoes)
+                    // consultar a url da imagem (storage)
+                    publicacoes.forEach((publicacao: any) => {
                         firebase.storage().ref()
-                            .child(`imagens/${childSnapshot.key}`)
+                            .child(`imagens/${publicacao.key}`)
                             .getDownloadURL()
                             .then((url: string) => {
                                 publicacao.url_imagem = url
@@ -74,10 +86,8 @@ export class Bd {
                                 this.consultaNomeUsuario(emailUsuario).then((nome: any) => {
                                     publicacao.nome_usuario = nome
                                 })
-                                publicacoes.push(publicacao)
                             })
                     })
-                    //console.log('Publicações', publicacoes)
                     resolve(publicacoes)
                 })
         })
