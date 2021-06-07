@@ -8,13 +8,17 @@ import { Autenticacao } from 'src/app/autenticacao.service';
 })
 export class HomeComponent implements OnInit {
 
-  constructor( private autenticacao: Autenticacao) { }
+  constructor(private autenticacao: Autenticacao) { }
 
   ngOnInit(): void {
   }
 
   public sair(): void {
     this.autenticacao.sair()
+  }
+
+  public atualizarTimeLine(): void {
+    console.log('Chegamos até aqui na home')
   }
 
 }
