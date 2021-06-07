@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, } from '@angular/core';
 import { Autenticacao } from 'src/app/autenticacao.service';
 
 @Component({
@@ -7,6 +7,8 @@ import { Autenticacao } from 'src/app/autenticacao.service';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+
+  @ViewChild('publicacoes') public publicacoes: any
 
   constructor(private autenticacao: Autenticacao) { }
 
@@ -18,7 +20,7 @@ export class HomeComponent implements OnInit {
   }
 
   public atualizarTimeLine(): void {
-    console.log('Chegamos até aqui na home')
+    this.publicacoes.atualizarTimeLine()
   }
 
 }
